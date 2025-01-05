@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "BACAP_Parser"
+version = "0.1.0-beta"
+description = "Library to parse BlazeAndCavesAdvancementsPack and Addons for it"
+readme = "README.md"
+license = { text = "Creative Commons Attribution 4.0 International" }
+authors = [
+    { name = "ItzSkyReed" },
+    { name = "_Fedor_F" }
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Creative Commons Attribution 4.0 International",
+  "Operating System :: OS Independent",
+]
+dependencies = ["autoslot"]
+
+[project.urls]
+Homepage = "https://github.com/user/my_project"
