@@ -1,15 +1,21 @@
 from collections.abc import Iterable
 from pathlib import Path
 
-
-from . import to_collection
+from .utils import to_collection
 from .AdvType import AdvTypeManager
 
 
-class Datapack(Slots):
-    def __init__(self, name: str, path: Path, adv_type_manager: AdvTypeManager, reward_namespace: str, technical_tabs: Iterable[str] | None = None):
-
 class Datapack:
+    def __init__(self, name: str, path: Path, adv_type_manager: AdvTypeManager, reward_namespace: str, technical_tabs: Iterable[str] | None = None, tab_name_mapper: TabNameMapper = TabNameMapper()):
+        """
+        :param name: Name of the datapack that will be used to identify it in Parser instance
+        :param path: Path to the datapack
+        :param adv_type_manager: AdvTypeManager instance
+        :param reward_namespace: namespace where rewards (exp, trophy, reward) are stored
+        :param technical_tabs: a list of tabs with technical advancements
+        :param tab_name_mapper: TabNameMapper instance with custom tabs, if not specified.
+        It will be created automatically with default BACAP tabs
+        """
         from .Advancement import AdvancementManager
 
         self._name = name
@@ -34,6 +40,7 @@ class Datapack:
 
         self._adv_type_manager = adv_type_manager
         self._advancement_manager = AdvancementManager(self._path, self, technical_tabs)
+        self._tab_name_mapper = tab_name_mapper
 
     def __repr__(self):
         return f"Datapack('{self._name}')"
@@ -65,3 +72,10 @@ class Datapack:
     @property
     def namespaces(self):
         return self._namespaces
+
+    @property
+    def tab_name_mapper(self):
+        """
+        :return: TabMap instance of the datapack
+        """
+        return self._tab_name_mapper

@@ -267,7 +267,7 @@ class Advancement(BaseAdvancement):
 
     @property
     def tab_display(self) -> str | None:
-        return DEFAULT_BACAP_TAB_NAMES.get(self._tab, None)
+        return self._datapack.tab_name_mapper.get(self._tab)
 
     @property
     def tab(self) -> str:

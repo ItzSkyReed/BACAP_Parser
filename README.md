@@ -97,6 +97,19 @@ description: str = trophy.item.description  # String with trophy description
 name_color: Color = trophy.item.color  # Color class of the trophy color
 ```
 
+#### Add custom tabs
+If your datapack has its own tabs with advancements, you can add them by specifying a custom `TabNameMapper` when creating the datapack.
+
+```py
+...
+tab_mapper = TabNameMapper({"ultimate_challenges": "The Ultimate Challenges Ever"})
+bacap = Datapack(name="custom", path=Path(r"datapacks/custom"),adv_type_manager=manager,
+                 reward_namespace="bacap_rewards", technical_tabs="technical", tab_name_mapper=tab_mapper)
+...
+
+```
+Now, when accessing the `tab_display` attribute of advancements from the `ultimate_challenges` tab, it will correctly display its display name.
+
 #### Get HEX/RGB/INT color codes from Minecraft Text Colors
 
 ```py

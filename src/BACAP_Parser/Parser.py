@@ -5,10 +5,15 @@ from .utils import to_collection
 from .Datapack import Datapack
 
 
-class Parser(Slots):
-    def __init__(self, *datapacks: Iterable[Datapack] | Datapack):
-        self._datapacks: dict[str, Datapack] = {dp.name: dp for dp in to_collection(datapacks, list)}
 class Parser:
+    """
+    A class to manage a collection of Datapack instances.
+    :param datapacks: One or more Datapack instances to initialize the parser with.
+    """
+
+    def __init__(self, *datapacks: Datapack):
+        self._datapacks: dict[str, Datapack] = {}
+        self.add_datapacks(to_collection(datapacks, list))
 
     def add_datapack(self, datapack: Datapack):
        self._datapacks[datapack.name] = datapack
