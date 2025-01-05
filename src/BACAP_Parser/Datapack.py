@@ -46,31 +46,52 @@ class Datapack:
         return f"Datapack('{self._name}')"
 
     @property
-    def name(self):
+    def name(self) -> str:
+        """
+        :return: Name of the datapack
+        """
         return self._name
 
     @property
     def path(self):
+        """
+        :return: Path to the datapack
+        """
         return self._path
 
     @property
     def adv_type_manager(self):
+        """
+        :return: AdvTypeManager instance of the datapack
+        """
         return self._adv_type_manager
 
     @property
     def advancement_manager(self):
+        """
+        :return: AdvancementManager instance of the datapack
+        """
         return self._advancement_manager
 
     @property
     def reward_namespace(self):
+        """
+        :return: namespace that contains advancement rewards of the datapack
+        """
         return self._reward_namespace
 
     @property
     def reward_namespace_path(self):
+        """
+        :return: path to the reward_namespace
+        """
         return self._reward_namespace_path
 
     @property
     def namespaces(self):
+        """
+        :return: list of namespaces of the datapack
+        """
         return self._namespaces
 
     @property

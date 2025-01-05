@@ -23,7 +23,6 @@ def trim_path_to_namespace(path: Path, namespaces: Sequence[Path]) -> Path:
     :param path: The path with namespace in it
     :param namespaces: A list of namespaces to search for
     :return: A new path trimmed to the first namespace found, including it
-    :return: A new path trimmed to the first namespace found, including it
     """
     namespace_names = [namespace.name for namespace in namespaces]
 
@@ -33,6 +32,10 @@ def trim_path_to_namespace(path: Path, namespaces: Sequence[Path]) -> Path:
     return path
 
 def cut_namespace(string_with_namespace: str) -> str:
+    """
+    :param string_with_namespace: string that contains namespace
+    :return: string without namespace
+    """
     if ":" in string_with_namespace:
         return string_with_namespace.split(":", 1)[1]
     return string_with_namespace
@@ -83,7 +86,6 @@ def arabic_to_rims(value: int | str) -> str:
     """
     Converts an integer to its Roman numeral representation.
     """
-
     value = int(value)
 
     if value <= 0:

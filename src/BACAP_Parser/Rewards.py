@@ -20,14 +20,23 @@ class DefaultReward:
 
     @property
     def path(self) -> Path:
+        """
+        :return: Path to the reward file.
+        """
         return self._path
 
     @property
     def mcpath(self) -> str:
+        """
+        :return: Minecraft internal path to the file.
+        """
         return self._mcpath
 
     @property
     def raw_text(self) -> str:
+        """
+        :return: Raw text of the reward file.
+        """
         return self._raw_text
 
     def __repr__(self) -> str:

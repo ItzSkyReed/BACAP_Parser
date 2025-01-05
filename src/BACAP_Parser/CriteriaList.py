@@ -32,6 +32,9 @@ class CriteriaList(list):
             raise TypeError("Argument must be a dict, Criteria object, or a list of Criteria objects")
 
     def is_all_impossible(self) -> bool:
+        """
+        :return: True if all criteria are impossible, False otherwise
+        """
         return all(criteria.is_impossible for criteria in self)
 
     def __repr__(self):
@@ -46,10 +49,6 @@ class CriteriaList(list):
         return super().__str__()
 
     def extend(self, criteria_list: Union["CriteriaList", Iterable[Criteria]]):
-        """
-        :param criteria_list:
-        :return:
-        """
         if not all(isinstance(criteria, Criteria) for criteria in criteria_list):
             raise TypeError("All elements must be instances of the Criteria class")
         super().extend(criteria_list)

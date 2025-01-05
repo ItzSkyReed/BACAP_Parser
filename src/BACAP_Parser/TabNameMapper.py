@@ -37,9 +37,19 @@ class TabNameMapper:
         return self._mapping.values()
 
     def __getitem__(self, key: str) -> str:
+        """
+        :param key: key to look up in the mapping.
+        :return: value in the mapping.
+        :raises KeyError: if key is not in the mapping.
+        """
         return self._mapping[key]
 
     def get[T](self, key: str, default: T = None) -> str | T | None:
+        """
+        :param key: key to look up in the mapping.
+        :param default: default value to return if key is not in the mapping.
+        :return: value in the mapping or default if key is not in the mapping.
+        """
         return self._mapping.get(key, default)
 
     def __setitem__(self, key: str, value: str) -> None:

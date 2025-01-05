@@ -21,18 +21,30 @@ class Item:
 
     @property
     def id(self) -> str:
+        """
+        :return: Minecraft string item id.
+        """
         return self._id
 
     @property
-    def components(self) -> dict | None:
+    def components(self) -> ExtendedDict | None:
+        """
+        :return: Dictionary of parsed item components, or None if item doesn't contain any components.
+        """
         return self._components
 
     @property
     def enchantments(self) -> dict | None:
+        """
+        :return: Dictionary of enchantments, or None if item doesn't contain any enchantments.'
+        """
         return self.components.get("enchantments")
 
     @property
     def has_enchantment_glint(self) -> bool:
+        """
+        :return: True if enchantment glint should be visible on the item.
+        """
         enchantment_glint_override = self._components.get_with_multiple_values("minecraft:enchantment_glint_override", "enchantment_glint_override")
         if enchantment_glint_override is not None:
             return True
@@ -58,10 +70,16 @@ class RewardItem(Item):
 
     @property
     def type(self) -> str:
+        """
+        :return: Item type. Can be 'item' or 'block'.
+        """
         return self._type
 
     @property
     def amount(self) -> int:
+        """
+        :return: Number of reward items.
+        """
         return self._amount
 
     def __repr__(self):
@@ -80,14 +98,23 @@ class TrophyItem(Item):
 
     @property
     def name(self) -> str:
+        """
+        :return: Trophy item name.
+        """
         return self._name
 
     @property
     def color(self) -> Color:
+        """
+        :return: Trophy item name color.
+        """
         return self._color
 
     @property
     def description(self) -> str:
+        """
+        :return: Trophy item description.
+        """
         return self._description
 
     def __repr__(self):

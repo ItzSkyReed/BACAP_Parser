@@ -39,18 +39,30 @@ class AdvType:
 
     @property
     def name(self) -> str:
+        """
+        :return: The name of the type.
+        """
         return self._name
 
     @property
     def frames(self) -> set[str]:
+        """
+        :return: The set of possible frames.
+        """
         return self._frames
 
     @property
     def colors(self) -> set[Color]:
+        """
+        :return: The set of colors frames.
+        """
         return self._colors
 
     @property
     def tabs(self) -> set[str] | None:
+        """
+        :return: The set of possible tabs.
+        """
         return self._tabs
 
     @staticmethod
@@ -77,19 +89,36 @@ class AdvTypeManager:
 
         if types is not None:
             self.register_types(types)
+        """
+        A class to manage possible AdvTypes of the datapack
+        :param adv_types: One or more AdvType instances to initialize the AdvTypeManager with.
+        """
 
     def register_type(self, adv_type: AdvType):
+        """
+        Adds a new AdvType to the AdvTypeManager to parse advancements.
+        :param adv_type: The AdvType instance to add.
+        :raises ValueError: If an AdvType is already registered.
+        """
         if adv_type not in self._types:
             self._types[adv_type.name] = adv_type
         else:
             raise ValueError("This type is already registered")
 
     def register_types(self, adv_types: Iterable[AdvType]):
+        """
+        Adds an iterable of AdvType to the AdvTypeManager to parse advancements.
+        :param adv_types: The iterable of AdvType instances to add.
+        :raises ValueError: If any of AdvType is already registered.
+        """
         for adv_type in adv_types:
             self.register_type(adv_type)
 
     @property
     def types(self) -> dict[str, AdvType]:
+        """
+        :return: dict of AdvType instances.
+        """
         return self._types
 
     def recognize_type(self, *, frame: str | None = None, color: Color | None = None, tab: str | None = None) -> AdvType:
