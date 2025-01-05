@@ -34,7 +34,7 @@ def trim_path_to_namespace(path: Path, namespaces: Sequence[Path]) -> Path:
 def cut_namespace(string_with_namespace: str) -> str:
     """
     :param string_with_namespace: string that contains namespace
-    :return: string without namespace
+    :return: string without a namespace
     """
     if ":" in string_with_namespace:
         return string_with_namespace.split(":", 1)[1]

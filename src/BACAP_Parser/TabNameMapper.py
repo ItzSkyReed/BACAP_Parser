@@ -44,7 +44,7 @@ class TabNameMapper:
         """
         return self._mapping[key]
 
-    def get[T](self, key: str, default: T = None) -> str | T | None:
+    def get[AnyType](self, key: str, default: AnyType = None) -> str | AnyType | None:
         """
         :param key: key to look up in the mapping.
         :param default: default value to return if key is not in the mapping.
