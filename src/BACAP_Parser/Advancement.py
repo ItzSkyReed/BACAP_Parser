@@ -3,8 +3,6 @@ from functools import reduce
 from pathlib import Path
 from typing import Literal, Type, Any
 
-from autoslot import Slots
-
 from .AdvType import AdvType
 from .ExtendedDict import ExtendedDict
 from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
@@ -51,7 +49,7 @@ class MissingDescriptionField(AdvancementException):
         super().__init__("Advancement does not contain a description")
 
 
-class BaseAdvancement(Slots):
+class BaseAdvancement:
     def __init__(self, path: Path, adv_json: dict | None, datapack: Datapack):
         """
         Initializes a new instance of the BaseAdvancement class.
@@ -339,7 +337,7 @@ class Advancement(BaseAdvancement):
     def __str__(self):
         return f"{self.__class__.__name__}([{self._datapack}] {self._mc_path})"
 
-class AdvancementManager(Slots):
+class AdvancementManager:
     def __init__(self, path: Path, datapack: Datapack, technical_tabs: Iterable[str] | None):
         """
         Initializes a new instance of the AdvancementManager class.

@@ -1,9 +1,7 @@
-from autoslot import Slots
-
 from .utils import cut_namespace
 
 
-class Criteria(Slots):
+class Criteria:
     def __init__(self, name: str, trigger: str):
         self._name = name
         self._trigger = cut_namespace(trigger)

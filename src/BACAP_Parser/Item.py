@@ -1,13 +1,12 @@
 from typing import Literal
 
-from autoslot import Slots
 
 from .ExtendedDict import ExtendedDict
 from .Color import Color
 
 
 
-class Item(Slots):
+class Item:
     def __init__(self, /, item_data: ExtendedDict[str, str | dict | list] = None,
                  *, item_id: str = None, components: ExtendedDict[str, str | ExtendedDict | list] = None) -> None:
         if item_data is None and item_id is None:

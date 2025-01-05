@@ -1,6 +1,5 @@
 from collections.abc import Iterable, Iterator
 
-from autoslot import Slots
 
 from .utils import to_collection
 from .Datapack import Datapack
@@ -9,6 +8,7 @@ from .Datapack import Datapack
 class Parser(Slots):
     def __init__(self, *datapacks: Iterable[Datapack] | Datapack):
         self._datapacks: dict[str, Datapack] = {dp.name: dp for dp in to_collection(datapacks, list)}
+class Parser:
 
     def add_datapack(self, datapack: Datapack):
        self._datapacks[datapack.name] = datapack

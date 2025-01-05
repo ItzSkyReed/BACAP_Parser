@@ -1,5 +1,3 @@
-from autoslot import Slots
-
 MINECRAFT_TEXT_COLORS_MAP = {
     "black": "#000000",
     "dark_blue": "#0000AA",
@@ -20,7 +18,7 @@ MINECRAFT_TEXT_COLORS_MAP = {
 }
 MINECRAFT_TEXT_COLORS_MAP_REVERSED = {value: key for key, value in MINECRAFT_TEXT_COLORS_MAP.items()}
 
-class Color(Slots):
+class Color:
 
     def __init__(self, color: str):
         """

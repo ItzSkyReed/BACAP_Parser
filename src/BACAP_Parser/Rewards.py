@@ -2,8 +2,6 @@ import re
 from collections.abc import MutableSequence
 from pathlib import Path
 
-from autoslot import Slots
-
 from .ExtendedDict import ExtendedDict
 from .patterns import exp_pattern
 from .nbt_decoder import nbt_decoder
@@ -13,7 +11,7 @@ from .Item import RewardItem, TrophyItem
 from .Color import Color
 
 
-class DefaultReward(Slots):
+class DefaultReward:
 
     def __init__(self, path: Path, mcpath: str):
         self._path = path

@@ -1,7 +1,6 @@
 from collections.abc import Iterable
 from pathlib import Path
 
-from autoslot import Slots
 
 from . import to_collection
 from .AdvType import AdvTypeManager
@@ -10,6 +9,7 @@ from .AdvType import AdvTypeManager
 class Datapack(Slots):
     def __init__(self, name: str, path: Path, adv_type_manager: AdvTypeManager, reward_namespace: str, technical_tabs: Iterable[str] | None = None):
 
+class Datapack:
         from .Advancement import AdvancementManager
 
         self._name = name

@@ -1,14 +1,12 @@
 from collections.abc import Iterable
 from typing import Type
 
-from autoslot import Slots
-
 from .Color import Color
 from .constants import ADV_FRAMES
 from .utils import to_collection
 
 
-class AdvType(Slots):
+class AdvType:
     """
     Represents an advanced type with specific attributes.
 
