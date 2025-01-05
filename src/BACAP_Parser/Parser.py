@@ -1,5 +1,4 @@
-from collections.abc import Iterable, Iterator
-
+from collections.abc import Iterable
 
 from .utils import to_collection
 from .Datapack import Datapack

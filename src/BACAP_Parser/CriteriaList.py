@@ -11,7 +11,7 @@ class CriteriaList(list):
         """
         super().__init__(*args, **kwargs)
         if adv_criteria is None:
-            self.clear()
+            return
 
         elif isinstance(adv_criteria, CriteriaList):
             self.extend(adv_criteria)

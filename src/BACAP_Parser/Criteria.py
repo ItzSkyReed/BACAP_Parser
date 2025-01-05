@@ -33,7 +33,7 @@ class Criteria:
         return f"<Criteria name={self._name}, trigger={self._trigger}"
 
     def __eq__(self, other: "Criteria") -> bool:
-        if other.__class__ == self.__class__:
+        if other.__class__ != self.__class__:
             raise TypeError("Element must be an instance of the Criteria class")
         return (self._name == other._name) and (self._trigger == other._trigger)
 

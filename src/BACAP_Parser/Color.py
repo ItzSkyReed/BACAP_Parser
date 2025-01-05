@@ -31,7 +31,7 @@ class Color:
 
     def __set_color(self, color: str):
         if color in MINECRAFT_TEXT_COLORS_MAP:
-            self._color =  MINECRAFT_TEXT_COLORS_MAP[color]
+            self._color = MINECRAFT_TEXT_COLORS_MAP[color]
         else:
             color = color.lstrip('#')
 

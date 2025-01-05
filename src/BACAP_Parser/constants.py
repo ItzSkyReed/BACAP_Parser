@@ -8,7 +8,7 @@ DEFAULT_MINECRAFT_DESCRIPTION_COLOR = Color("green")
 
 DEFAULT_BACAP_HIDDEN_COLOR = Color("light_purple")
 
-DEFAULT_BACAP_TAB_NAMES = {"adventure": "Adventure", "animal": "Animals", "bacap": "B&C Advancements", "biomes": "Biomes", "building": "Building",
+DEFAULT_BACAP_TAB_NAMES_MAP = {"adventure": "Adventure", "animal": "Animals", "bacap": "B&C Advancements", "biomes": "Biomes", "building": "Building",
                  "challenges": "Super Challenges", "enchanting": "Enchanting", "end": "The End", "farming": "Farming", "mining": "Mining",
                  "monsters": "Monsters", "nether": "Nether", "potion": "Potions", "redstone": "Redstone", "statistics": "Statistics", "weaponry": "Weaponry"}
 

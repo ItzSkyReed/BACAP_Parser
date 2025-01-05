@@ -5,7 +5,7 @@ from typing import Literal, Type, Any
 
 from .AdvType import AdvType
 from .ExtendedDict import ExtendedDict
-from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
+from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES_MAP, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
 from .Color import Color
 from .CriteriaList import CriteriaList
 from .Datapack import Datapack
@@ -374,7 +374,6 @@ class AdvancementManager:
         self._datapack = datapack
 
         self._advancement_folders = self._get_advancement_folders(path)
-
         self._technical_tabs_paths = [
             advancement_folder / technical_tab
             for advancement_folder in self._advancement_folders

@@ -3,7 +3,7 @@ from pathlib import Path
 
 from .utils import to_collection
 from .AdvType import AdvTypeManager
-
+from .TabNameMapper import TabNameMapper
 
 class Datapack:
     def __init__(self, name: str, path: Path, adv_type_manager: AdvTypeManager, reward_namespace: str, technical_tabs: Iterable[str] | None = None, tab_name_mapper: TabNameMapper = TabNameMapper()):

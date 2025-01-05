@@ -52,7 +52,7 @@ class Item:
             return bool(self._components.get("enchantments", False))
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self._id})"
+        return f"{self.__class__.__name__}(\"{self._id}\")"
 
     def __str__(self):
         return self.__repr__()
@@ -83,7 +83,7 @@ class RewardItem(Item):
         return self._amount
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(item:{self._id}, amount:{self._amount}, type:{self.type})"
+        return f"{self.__class__.__name__}(id:\"{self._id}\", amount:\"{self._amount}\", type:\"{self.type}\")"
 
     def __str__(self):
         return self.__repr__()
@@ -118,7 +118,7 @@ class TrophyItem(Item):
         return self._description
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(item:{self._id}, name:{self._name})"
+        return f"{self.__class__.__name__}(id:\"{self._id}\", name:\"{self._name}\")"
 
     def __str__(self):
         return self.__repr__()
