@@ -2,8 +2,6 @@ import re
 from collections.abc import MutableSequence
 from pathlib import Path
 
-from autoslot import Slots
-
 from .ExtendedDict import ExtendedDict
 from .patterns import exp_pattern
 from .nbt_decoder import nbt_decoder
@@ -13,23 +11,36 @@ from .Item import RewardItem, TrophyItem
 from .Color import Color
 
 
-class DefaultReward(Slots):
-
+class DefaultReward:
     def __init__(self, path: Path, mcpath: str):
+        """
+        Default class for all rewards.
+        :param path: Path to the reward file.
+        :param mcpath: Minecraft path of the reward
+        """
         self._path = path
         self._mcpath = mcpath
         self._raw_text = self._path.read_text(encoding='utf-8').strip()
 
     @property
     def path(self) -> Path:
+        """
+        :return: Path to the reward file.
+        """
         return self._path
 
     @property
     def mcpath(self) -> str:
+        """
+        :return: Minecraft internal path to the file.
+        """
         return self._mcpath
 
     @property
     def raw_text(self) -> str:
+        """
+        :return: Raw text of the reward file.
+        """
         return self._raw_text
 
     def __repr__(self) -> str:
@@ -37,8 +48,12 @@ class DefaultReward(Slots):
 
 
 class Exp(DefaultReward):
-
     def __init__(self, path: Path, mcpath: str):
+        """
+        Class for Exp reward.
+        :param path: Path to the reward file.
+        :param mcpath: Minecraft path of the reward
+        """
         super().__init__(path, mcpath)
         self._value = self.__parse_exp()
 
@@ -57,6 +72,9 @@ class Exp(DefaultReward):
 
     @property
     def value(self) -> int:
+        """
+        :return: Value of the amount of experience.
+        """
         return self._value
 
     def __repr__(self) -> str:
@@ -65,6 +83,11 @@ class Exp(DefaultReward):
 
 class Reward(DefaultReward):
     def __init__(self, path: Path, mcpath: str):
+        """
+        Class for Item reward.
+        :param path: Path to the reward file.
+        :param mcpath: Minecraft path of the reward
+        """
         super().__init__(path, mcpath)
         self._command_type = None
         self._item = self.__parse_reward()
@@ -98,18 +121,29 @@ class Reward(DefaultReward):
 
     @property
     def command_type(self) -> str:
+        """
+        :return: Command type of the reward. Can be "give" or "summon".
+        """
         return self._command_type
 
     @property
     def item(self) -> RewardItem:
+        """
+        :return: Item of the reward.
+        """
         return self._item
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self._mcpath}, {self._item})"
 
-class Trophy(DefaultReward):
 
+class Trophy(DefaultReward):
     def __init__(self, path: Path, mcpath: str):
+        """
+        Class for Trophy reward.
+        :param path: Path to the reward file.
+        :param mcpath: Minecraft path of the reward
+        """
         super().__init__(path, mcpath)
         self._command_type = None
         self._item = self.__parse_trophy()
@@ -158,6 +192,20 @@ class Trophy(DefaultReward):
         description = "\n".join(x for x in self.__parse_description(components.get("lore", [])) if ".minecraft." not in x)
 
         return TrophyItem(item_id=item_id, components=components, name=name, color=color, description=description)
+
+    @property
+    def command_type(self) -> str:
+        """
+        :return: Command type of the reward. Can be "give" or "summon".
+        """
+        return self._command_type
+
+    @property
+    def item(self) -> TrophyItem:
+        """
+        :return: Item of the reward.
+        """
+        return self._item
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self._mcpath}, {self._item})"

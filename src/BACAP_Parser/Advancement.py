@@ -3,11 +3,9 @@ from functools import reduce
 from pathlib import Path
 from typing import Literal, Type, Any
 
-from autoslot import Slots
-
 from .AdvType import AdvType
 from .ExtendedDict import ExtendedDict
-from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
+from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES_MAP, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
 from .Color import Color
 from .CriteriaList import CriteriaList
 from .Datapack import Datapack
@@ -37,21 +35,30 @@ class JSONParsingError(AdvancementException):
 
 
 class InvalidRewardFunction(AdvancementException):
+    """
+    Exception raised when an invalid reward function is passed, or reward function does not exist.
+    """
     def __init__(self):
         super().__init__("Advancement does not contain a valid reward function")
 
 
 class MissingTitleField(AdvancementException):
+    """
+    Exception raised when a title does not exist.
+    """
     def __init__(self):
         super().__init__("Advancement does not contain a title")
 
 
 class MissingDescriptionField(AdvancementException):
+    """
+    Exception raised when description does not exist.
+    """
     def __init__(self):
         super().__init__("Advancement does not contain a description")
 
 
-class BaseAdvancement(Slots):
+class BaseAdvancement:
     def __init__(self, path: Path, adv_json: dict | None, datapack: Datapack):
         """
         Initializes a new instance of the BaseAdvancement class.
@@ -75,28 +82,28 @@ class BaseAdvancement(Slots):
     @property
     def path(self) -> Path:
         """
-        Returns the file path.
+        :return: The file path.
         """
         return self._path
 
     @property
     def json_string(self) -> str:
         """
-        Returns the content of the advancement JSON file as a string.
+        :return: The raw JSON string of the advancement.
         """
         return self._path.read_text(encoding="utf-8")
 
     @property
     def json(self) -> dict | None:
         """
-        Returns the JSON content of the advancement.
+        :return: The JSON content of the advancement.
         """
         return self._json
 
     @property
     def parent(self) -> str | None:
         """
-        Returns the parent advancement, if any.
+        :return: The Minecraft Path of the parent advancement, if any.
         """
         return self._parent
 
@@ -167,7 +174,7 @@ class InvalidAdvancement(BaseAdvancement):
     @property
     def reason(self) -> AdvancementException:
         """
-        The reason why the advancement is considered invalid.
+        :return: The reason why the advancement is considered invalid.
         """
         return self._reason
 
@@ -209,7 +216,6 @@ class Advancement(BaseAdvancement):
         """
 
         super().__init__(path, adv_json, datapack)
-
         self._tab = tab
         self._color = color
         self._frame = frame
@@ -249,88 +255,106 @@ class Advancement(BaseAdvancement):
     @property
     def title(self) -> str:
         """
-        Returns the title of the advancement.
+        :return: the title of the advancement.
         """
         return self._title
 
     @property
     def description(self) -> str:
         """
-        Returns the description of the advancement.
+        :return: the description of the advancement.
         """
         return self._description
 
     @property
     def type(self) -> AdvType:
         """
-        Returns the technical type of the advancement (For bc_rewards, etc.).
+        :return: The type of the advancement
         """
         return self._type
 
     @property
     def tab_display(self) -> str | None:
-        return DEFAULT_BACAP_TAB_NAMES.get(self._tab, None)
+        """
+        :return: The tab of the advancement that is displayed in minecraft advancement interface.
+        """
+        return self._datapack.tab_name_mapper.get(self._tab)
 
     @property
     def tab(self) -> str:
         """
-        Returns the tab of the advancement.
+        :return: The tab (folder) of the advancement.
         """
         return self._tab
 
     @property
     def color(self) -> Color | None:
         """
-        Returns the color class of the advancement description.
+        :return: The color class of the advancement description.
         """
         return self._color
 
     @property
     def frame(self) -> str | None:
         """
-        Returns the frame of the advancement.
+        :return: The frame of the advancement.
         """
         return self._frame
 
     @property
     def hidden(self) -> bool:
         """
-        Returns True, if the advancement is hidden.
+        :return: Is advancement hidden or not.
         """
         return self._hidden
 
     @property
     def background(self) -> str | None:
         """
-        Returns a background path if it is root advancement.
+        :return: Background path if it is root advancement.
         """
         return self._background
 
     @property
     def is_root(self) -> bool:
         """
-        Returns true if the advancement is root, by checking the background path.
+        :return: Is this advancement a root of the tab, by checking the background Minecraft Path.
         """
         return self._background is not None
 
     @property
     def icon(self) -> Item:
+        """
+        :return: The Item class of the advancement icon.
+        """
         return self._icon
 
     @property
     def reward_mcpath(self) -> str:
+        """
+        :return: The Minecraft path of the reward function.
+        """
         return self._reward_mcpath
 
     @property
-    def exp(self):
+    def exp(self) -> Exp | None:
+        """
+        :return: Exp class if exp reward exists, else None.
+        """
         return self._exp
 
     @property
-    def reward(self):
+    def reward(self) -> Reward | None:
+        """
+        :return: Reward class if item reward exists, else None.
+        """
         return self._reward
 
     @property
-    def trophy(self):
+    def trophy(self) -> Trophy| None:
+        """
+        :return: Trophy class if Trophy reward exists, else None.
+        """
         return self._trophy
 
     def __repr__(self):
@@ -339,7 +363,7 @@ class Advancement(BaseAdvancement):
     def __str__(self):
         return f"{self.__class__.__name__}([{self._datapack}] {self._mc_path})"
 
-class AdvancementManager(Slots):
+class AdvancementManager:
     def __init__(self, path: Path, datapack: Datapack, technical_tabs: Iterable[str] | None):
         """
         Initializes a new instance of the AdvancementManager class.
@@ -350,7 +374,6 @@ class AdvancementManager(Slots):
         self._datapack = datapack
 
         self._advancement_folders = self._get_advancement_folders(path)
-
         self._technical_tabs_paths = [
             advancement_folder / technical_tab
             for advancement_folder in self._advancement_folders
@@ -384,14 +407,23 @@ class AdvancementManager(Slots):
 
     @property
     def technical_tabs_paths(self) -> list[Path]:
+        """
+        :return: A list of paths to the technical tabs.
+        """
         return self._technical_tabs_paths
 
     @property
     def adv_list(self) -> list[Advancement | InvalidAdvancement | TechnicalAdvancement]:
+        """
+        :return: A list of Advancement instances.
+        """
         return self._advancements_list
 
     @property
     def adv_dict(self) -> dict[Path, Advancement | InvalidAdvancement | TechnicalAdvancement]:
+        """
+        :return: A dictionary of Advancement instances.
+        """
         return self._advancements_dict
 
     def filtered_list(
@@ -496,6 +528,11 @@ class AdvancementManager(Slots):
         return self._datapack
 
     def is_technical_advancement(self, path_to_adv: Path) -> bool:
+        """
+        Checks is the advancement path is relative to technical paths of the datapack.
+        :param path_to_adv: Path to the advancement file.
+        :return: True if the advancement path is relative to technical paths, else False.
+        """
         return any(path_to_adv.is_relative_to(t_p) for t_p in self._technical_tabs_paths)
 
 
