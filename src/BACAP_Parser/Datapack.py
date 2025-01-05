@@ -17,9 +17,6 @@ class Datapack(Slots):
 
         technical_tabs = to_collection(technical_tabs, tuple)
 
-
-        if self._path.is_absolute():
-            raise ValueError("Path must be relative")
         if not (self._path / "pack.mcmeta").exists():
             raise FileNotFoundError("pack.mcmeta not found in the datapack root, may be this is a wrong path")
 
