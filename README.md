@@ -20,7 +20,9 @@ from pathlib import Path # All paths must be pathlib.Path classes
 
 task = AdvType(name="task", frames="task", colors=Color("green"))
 goal = AdvType(name="goal", frames="goal", colors=Color("#75E1FF"))
-challenge = AdvType(name="challenge", frames="challenge", colors=Color("dark_purple"), hidden_color=constants.DEFAULT_BACAP_HIDDEN_COLOR) # Challenges can also be hidden, so configure default color for hidden advancement in BACAP
+# Challenges can also be hidden, so configure default color for hidden advancement in BACAP
+challenge = AdvType(name="challenge", frames="challenge", 
+                    colors=Color("dark_purple"), hidden_color=BACAP_Parser.DEFAULT_BACAP_HIDDEN_COLOR)
 super_challenge = AdvType(name="super_challenge", frames="challenge", colors=Color("#FF2A2A"))
 root = AdvType(name="root", frames=("task", "challenge"), colors=Color("#CCCCCC"))
 milestone = AdvType(name="milestone", frames="goal", colors=Color("yellow"), tabs="bacap")
@@ -28,12 +30,15 @@ advancement_legend = AdvType(name="advancement_legend", frames="challenge", colo
 manager = AdvTypeManager([task, goal, challenge, super_challenge, root, milestone, advancement_legend])
 
 
-bacap = Datapack(name="bacap", path=Path("tests/test_datapacks/bacap"), adv_type_manager=manager, reward_namespace="bacap_rewards", technical_tabs="technical")
+bacap = Datapack(name="bacap", path=Path("datapacks/bacap"), 
+                 adv_type_manager=manager, reward_namespace="bacap_rewards", technical_tabs="technical")
 
 # You can use the one AdvTypeManager for many datapacks if they have the same advancement types
 
-bacaped = Datapack(name="bacaped", path=Path("tests/test_datapacks/bacaped"), adv_type_manager=manager, reward_namespace="bacaped_rewards", technical_tabs="technical")
-bacaped_hardcore = Datapack(name="bacaped_hardcore", path=Path("tests/test_datapacks/bacaped_hardcore"), adv_type_manager=manager, reward_namespace="bacaped_rewards", technical_tabs="technical")
+bacaped = Datapack(name="bacaped", path=Path("datapacks/bacaped"), 
+                   adv_type_manager=manager, reward_namespace="bacaped_rewards", technical_tabs="technical")
+bacaped_hardcore = Datapack(name="bacaped_hardcore", path=Path("datapacks/bacaped_hardcore"), 
+                            adv_type_manager=manager, reward_namespace="bacaped_rewards", technical_tabs="technical")
 
 parser = Parser(bacap, bacaped, bacaped_hardcore)
 ```
@@ -42,7 +47,8 @@ parser = Parser(bacap, bacaped, bacaped_hardcore)
 ### Get Advancements Data
 ```py
 
-bacap_advs: list[Advancement | TechnicalAdvancement | InvalidAdvancement] = parser.get_datapack("bacap").advancement_manager.filtered_list() # Get all advancements except technical and invalid
+bacap_advs: list[Advancement | TechnicalAdvancement | InvalidAdvancement] = parser.get_datapack(
+    "bacap").advancement_manager.filtered_list() # Get all advancements except technical and invalid
 for adv in bacap_advs:
     print(adv.title)
     if adv.type.name == "super_challenge": 
@@ -60,7 +66,8 @@ There are three ways to filter advancements.
 
 ```py
 manager: AdvancementManager = parser.get_datapack("bacap").advancement_manager
-only_technical: Iterator[TechincalAdvancement] = manager.filtered_iterator(skip_normal=True, skip_invalid=True, skip_technical=True)
+only_technical: Iterator[TechincalAdvancement] = manager.filtered_iterator(
+    skip_normal=True, skip_invalid=True, skip_technical=False)
 ```
 
 `find`  provides a more flexible setup with the ability to pass filtering parameters.
