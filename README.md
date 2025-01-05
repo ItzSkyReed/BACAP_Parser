@@ -9,7 +9,7 @@ A Python library to parse BlazeAndCavesAdvancementsPack and its Addons
 ### Installing
 
 ```bash
-pip install BACAP-Parser==0.1.0b0
+pip install BACAP-Parser
 ```
 ## Configuration
 
