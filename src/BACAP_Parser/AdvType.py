@@ -84,15 +84,13 @@ class NoTypesMatch(Exception):
 
 
 class AdvTypeManager:
-    def __init__(self, types: Iterable[AdvType] | None = None):
-        self._types = dict()
-
-        if types is not None:
-            self.register_types(types)
+    def __init__(self, *adv_types: AdvType):
         """
         A class to manage possible AdvTypes of the datapack
         :param adv_types: One or more AdvType instances to initialize the AdvTypeManager with.
         """
+        self._types: dict[str, AdvType] = {}
+        self.register_types(to_collection(adv_types, list))
 
     def register_type(self, adv_type: AdvType):
         """

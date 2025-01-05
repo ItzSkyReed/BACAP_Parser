@@ -52,7 +52,11 @@ class TabNameMapper:
         """
         return self._mapping.get(key, default)
 
-    def __setitem__(self, key: str, value: str) -> None:
+    def __setitem__(self, key: str, value: str):
+        """
+        :param key: key of the value to set.
+        :param value: value to set.
+        """
         self._mapping[key] = value
 
     @property
