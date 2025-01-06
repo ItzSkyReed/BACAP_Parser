@@ -86,6 +86,8 @@ class Exp(DefaultReward):
 
 
 class Reward(DefaultReward):
+    _item_class = RewardItem
+
     def __init__(self, path: Path, mcpath: str):
         """
         Class for Item reward.
@@ -113,14 +115,14 @@ class Reward(DefaultReward):
             self._command_type = "give"
 
             components = components_decoder(command_data["components"]) if command_data.get("components") else None
-            return RewardItem(command_data["item_id"], components, item_type, command_data["amount"])
+            return self._item_class(command_data["item_id"], components, item_type, command_data["amount"])
 
         match = re.search(reward_summon_pattern, self._raw_text)
         if match:
             nbt_data = nbt_decoder(match.groupdict()["nbt"])
             self._command_type = "summon"
 
-            return RewardItem(nbt_data["Item"]["id"], nbt_data["Item"]["count"], item_type, nbt_data["Item"].get("components"))
+            return self._item_class(nbt_data["Item"]["id"], nbt_data["Item"]["count"], item_type, nbt_data["Item"].get("components"))
 
         return None
 
@@ -143,6 +145,8 @@ class Reward(DefaultReward):
 
 
 class Trophy(DefaultReward):
+    _item_class = TrophyItem
+
     def __init__(self, path: Path, mcpath: str):
         """
         Class for Trophy reward.
@@ -197,7 +201,7 @@ class Trophy(DefaultReward):
 
         description = "\n".join(x for x in self.__parse_description(components.get("lore", [])) if ".minecraft." not in x)
 
-        return TrophyItem(item_id=item_id, components=components, name=name, color=color, description=description)
+        return self._item_class(item_id=item_id, components=components, name=name, color=color, description=description)
 
     @property
     def command_type(self) -> str:
