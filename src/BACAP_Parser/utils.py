@@ -66,19 +66,23 @@ def get_file_text(path: Path, encoding: str = None) -> str:
         return f.read()
 
 
-def safe_load_json(path: Path, encoding: str = "utf-8") -> ExtendedDict | None:
+def safe_load_json(path: Path, encoding: str = "utf-8", object_hook_class: Type[dict | ExtendedDict] = ExtendedDict) -> ExtendedDict | None:
     """
+    Loads a JSON file from the specified path and applies the provided object_hook to the data.
 
-    :param path: Path-object
-    :param encoding: Encoding. Default value in config
-    :return: File's JSON
+    :param path: The file path as a Path object.
+    :param encoding: The file encoding. Defaults to the value in the configuration.
+    :param object_hook_class: Ф class that will be applied to the deserialized JSON data.
+                        It is used in the `json.loads` method to transform the data into the desired format.
+                        By default, `ExtendedDict` is used.
+    :return: The JSON data loaded from the file, transformed by the object_hook, or None if the file cannot be loaded.
     """
     text = get_file_text(path, encoding)
     try:
-        return json.loads(text, object_hook=lambda d: ExtendedDict(d))
+        return json.loads(text, object_hook=lambda d: object_hook_class(d))
     except json.decoder.JSONDecodeError:
         try:
-            return json.loads(text.replace("\\'", ""), object_hook=lambda d: ExtendedDict(d))
+            return json.loads(text.replace("\\'", ""), object_hook=lambda d: object_hook_class(d))
         except json.decoder.JSONDecodeError:
             return None
 
