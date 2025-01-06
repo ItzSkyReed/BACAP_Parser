@@ -77,7 +77,7 @@ class Exp(DefaultReward):
     @property
     def value(self) -> int:
         """
-        :return: Value of the amount of experience.
+        :return: Experience amount value.
         """
         return self._value
 
