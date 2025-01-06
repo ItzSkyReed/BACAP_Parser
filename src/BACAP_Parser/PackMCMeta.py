@@ -1,7 +1,6 @@
 from pathlib import Path
 
-from .ExtendedDict import ExtendedDict
-from .utils import safe_load_json
+from .utils import safe_load_json_file
 
 
 class PackMCMeta:
@@ -10,7 +9,7 @@ class PackMCMeta:
             raise FileNotFoundError("pack.mcmeta not found in the datapack root, may be this is a wrong path")
 
         self._path = datapack_path / "pack.mcmeta"
-        self._json = safe_load_json(path=self._path, object_hook_class=dict)
+        self._json = safe_load_json_file(path=self._path, object_hook_class=dict)
 
         if self._json is None:
             raise ValueError("pack.mcmeta is not a valid json, or empty")
@@ -24,7 +23,17 @@ class PackMCMeta:
         if not (self._data_path.exists() or self._data_path.is_dir()):
             raise FileNotFoundError(f"latest data directory: \"{self._data_path}\" not found in the datapack, or it is not a directory")
 
-        self._description = self._json.get("description")
+        self._description = self._parse_description()
+
+    def _parse_description(self) -> str:
+        raw_description = self._json["pack"]["description"]
+        if type(raw_description) == str:
+            return raw_description
+        else:
+            text = ""
+            for line in raw_description:
+                text += line["text"]
+            return text
 
     def _validate_pack_format(self) -> int:
         pack_format = self._json.get("pack", {}).get("pack_format", -1)
