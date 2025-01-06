@@ -66,7 +66,7 @@ def get_file_text(path: Path, encoding: str = None) -> str:
         return f.read()
 
 
-def safe_load_json(path: Path, encoding: str = "utf-8", object_hook_class: Type[dict | ExtendedDict] = ExtendedDict) -> ExtendedDict | None:
+def safe_load_json_file(path: Path, encoding: str = "utf-8", object_hook_class: Type[dict | ExtendedDict] = ExtendedDict) -> ExtendedDict | None:
     """
     Loads a JSON file from the specified path and applies the provided object_hook to the data.
 
@@ -83,6 +83,16 @@ def safe_load_json(path: Path, encoding: str = "utf-8", object_hook_class: Type[
     except json.decoder.JSONDecodeError:
         try:
             return json.loads(text.replace("\\'", ""), object_hook=lambda d: object_hook_class(d))
+        except json.decoder.JSONDecodeError:
+            return None
+
+
+def safe_load_json_string(string: str, object_hook_class: Type[dict | ExtendedDict] = ExtendedDict) -> ExtendedDict | None:
+    try:
+        return json.loads(string, object_hook=lambda d: object_hook_class(d))
+    except json.decoder.JSONDecodeError:
+        try:
+            return json.loads(string.replace("\\'", ""), object_hook=lambda d: object_hook_class(d))
         except json.decoder.JSONDecodeError:
             return None
 
