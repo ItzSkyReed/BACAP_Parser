@@ -227,9 +227,14 @@ class Advancement(BaseAdvancement):
         self._background = self._json["display"].get("background")
         self._icon = Item(self._json["display"]["icon"])
 
-        self._exp = self._initialize_reward("exp", Exp)
-        self._reward = self._initialize_reward("reward", Reward)
-        self._trophy = self._initialize_reward("trophy", Trophy)
+        if self._datapack.reward_namespace_path is not None:
+            self._exp = self._initialize_reward("exp", Exp)
+            self._reward = self._initialize_reward("reward", Reward)
+            self._trophy = self._initialize_reward("trophy", Trophy)
+        else:
+            self._exp = None
+            self._reward = None
+            self._trophy = None
 
     def _initialize_reward(self, name: Literal["exp", "reward", "trophy"], cls: Type[Exp | Reward | Trophy]):
         """
