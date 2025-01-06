@@ -5,13 +5,13 @@ from typing import Literal, Type, Any
 
 from .AdvType import AdvType
 from .ExtendedDict import ExtendedDict
-from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES_MAP, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
+from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
 from .Color import Color
 from .CriteriaList import CriteriaList
 from .Datapack import Datapack
 from .Item import Item
 from .Rewards import Exp, Trophy, Reward
-from .utils import path_to_mc_path, safe_load_json, trim_path_to_namespace
+from .utils import path_to_mc_path, safe_load_json_file, trim_path_to_namespace
 
 
 class AdvancementException(Exception):
@@ -228,9 +228,9 @@ class Advancement(BaseAdvancement):
         self._icon = Item(self._json["display"]["icon"])
 
         if self._datapack.reward_namespace_path is not None:
-            self._exp = self._initialize_reward("exp", Exp)
-            self._reward = self._initialize_reward("reward", Reward)
-            self._trophy = self._initialize_reward("trophy", Trophy)
+            self._exp = self._initialize_reward("exp", self._datapack.exp_class)
+            self._reward = self._initialize_reward("reward", self._datapack.reward_class)
+            self._trophy = self._initialize_reward("trophy", self._datapack.trophy_class)
         else:
             self._exp = None
             self._reward = None
@@ -369,16 +369,14 @@ class Advancement(BaseAdvancement):
         return f"{self.__class__.__name__}([{self._datapack}] {self._mc_path})"
 
 class AdvancementManager:
-    def __init__(self, path: Path, datapack: Datapack, technical_tabs: Iterable[str] | None):
+    def __init__(self, datapack: Datapack, technical_tabs: Iterable[str] | None):
         """
         Initializes a new instance of the AdvancementManager class.
-        :param path: Path to the datapack folder
         :param datapack: Datapack instance
         """
-
         self._datapack = datapack
 
-        self._advancement_folders = self._get_advancement_folders(path)
+        self._advancement_folders = self._get_advancement_folders(datapack.data_path)
         self._technical_tabs_paths = [
             advancement_folder / technical_tab
             for advancement_folder in self._advancement_folders
@@ -396,10 +394,10 @@ class AdvancementManager:
                 self._advancements_dict[adv_path] = _AdvancementFactory.load_advancement(adv_path, self)
 
     @staticmethod
-    def _get_advancement_folders(path) -> list[Path]:
+    def _get_advancement_folders(data_path) -> list[Path]:
         advancement_folders = []
 
-        for namespace in (path / "data").iterdir():
+        for namespace in data_path.iterdir():
             if not namespace.is_dir():
                 continue
 
@@ -544,7 +542,7 @@ class AdvancementManager:
 class _AdvancementFactory:
     @classmethod
     def load_advancement(cls, path: Path, advancement_manager: AdvancementManager) -> Advancement | TechnicalAdvancement | InvalidAdvancement:
-        adv_json: ExtendedDict = safe_load_json(path)
+        adv_json: ExtendedDict = safe_load_json_file(path)
 
         if cls._is_not_parsable_json(adv_json):
             return InvalidAdvancement(path=path, adv_json=adv_json, reason=JSONParsingError(), datapack=advancement_manager.datapack)

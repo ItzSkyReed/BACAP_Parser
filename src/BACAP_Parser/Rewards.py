@@ -48,11 +48,15 @@ class DefaultReward:
 
 
 class Exp(DefaultReward):
+    """
+    Default class for all exp rewards.
+    """
     def __init__(self, path: Path, mcpath: str):
         """
         Class for Exp reward.
         :param path: Path to the reward file.
         :param mcpath: Minecraft path of the reward
+        :raises ValueError: If the reward file is invalid/empty.
         """
         super().__init__(path, mcpath)
         self._value = self.__parse_exp()
@@ -73,7 +77,7 @@ class Exp(DefaultReward):
     @property
     def value(self) -> int:
         """
-        :return: Value of the amount of experience.
+        :return: Experience amount value.
         """
         return self._value
 
@@ -82,11 +86,14 @@ class Exp(DefaultReward):
 
 
 class Reward(DefaultReward):
+    __item_class = RewardItem
+
     def __init__(self, path: Path, mcpath: str):
         """
         Class for Item reward.
         :param path: Path to the reward file.
         :param mcpath: Minecraft path of the reward
+        :raises ValueError: If the reward file is invalid/empty.
         """
         super().__init__(path, mcpath)
         self._command_type = None
@@ -108,14 +115,14 @@ class Reward(DefaultReward):
             self._command_type = "give"
 
             components = components_decoder(command_data["components"]) if command_data.get("components") else None
-            return RewardItem(command_data["item_id"], components, item_type, command_data["amount"])
+            return self.__item_class(command_data["item_id"], components, item_type, command_data["amount"])
 
         match = re.search(reward_summon_pattern, self._raw_text)
         if match:
             nbt_data = nbt_decoder(match.groupdict()["nbt"])
             self._command_type = "summon"
 
-            return RewardItem(nbt_data["Item"]["id"], nbt_data["Item"]["count"], item_type, nbt_data["Item"].get("components"))
+            return self.__item_class(nbt_data["Item"]["id"], nbt_data["Item"]["count"], item_type, nbt_data["Item"].get("components"))
 
         return None
 
@@ -138,11 +145,14 @@ class Reward(DefaultReward):
 
 
 class Trophy(DefaultReward):
+    __item_class = TrophyItem
+
     def __init__(self, path: Path, mcpath: str):
         """
         Class for Trophy reward.
         :param path: Path to the reward file.
         :param mcpath: Minecraft path of the reward
+        :raises ValueError: If the reward file is invalid/empty.
         """
         super().__init__(path, mcpath)
         self._command_type = None
@@ -191,7 +201,7 @@ class Trophy(DefaultReward):
 
         description = "\n".join(x for x in self.__parse_description(components.get("lore", [])) if ".minecraft." not in x)
 
-        return TrophyItem(item_id=item_id, components=components, name=name, color=color, description=description)
+        return self.__item_class(item_id=item_id, components=components, name=name, color=color, description=description)
 
     @property
     def command_type(self) -> str:
@@ -203,7 +213,7 @@ class Trophy(DefaultReward):
     @property
     def item(self) -> TrophyItem:
         """
-        :return: Item of the reward.
+        :return: Trophy item of the reward.
         """
         return self._item
 

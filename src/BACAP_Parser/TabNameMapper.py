@@ -5,7 +5,7 @@ from .constants import DEFAULT_BACAP_TAB_NAMES_MAP
 
 class TabNameMapper:
     """
-    A utility class to manage the mapping between system tab names and their display names.
+    A utility class to manage the mapping between system tab names and their display names. Can be modified after initialization.
     """
 
     def __init__(self, additional_tabs: dict[str, str] = None):

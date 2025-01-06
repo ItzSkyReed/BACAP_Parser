@@ -13,3 +13,5 @@ DEFAULT_BACAP_TAB_NAMES_MAP = {"adventure": "Adventure", "animal": "Animals", "b
                  "monsters": "Monsters", "nether": "Nether", "potion": "Potions", "redstone": "Redstone", "statistics": "Statistics", "weaponry": "Weaponry"}
 
 ARABIC_TO_ROMAN_MAP = {1000: "M", 900: "CM", 500: "D", 400: "CD", 100: "C", 90: "XC", 50: "L", 40: "XL", 10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"}
+
+MINIMAL_PACK_FORMAT = 48
