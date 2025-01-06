@@ -43,7 +43,7 @@ class PackMCMeta:
         :raises KeyError: If the `pack.mcmeta` file does not contain a `pack` or `description` key.
         """
         raw_description = self._json["pack"]["description"]
-        if type(raw_description) == str:
+        if isinstance(raw_description, str):
             return raw_description
         else:
             text = ""
