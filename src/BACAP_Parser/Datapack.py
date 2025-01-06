@@ -164,5 +164,9 @@ class Datapack:
         return self._trophy_class
 
     @property
+    def pack_mcmeta(self):
+        return self._pack_mcmeta
+
+    @property
     def data_path(self) -> path:
         return self._pack_mcmeta.data_path
