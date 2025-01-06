@@ -5,7 +5,7 @@ from typing import Literal, Type, Any
 
 from .AdvType import AdvType
 from .ExtendedDict import ExtendedDict
-from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_BACAP_TAB_NAMES_MAP, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
+from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
 from .Color import Color
 from .CriteriaList import CriteriaList
 from .Datapack import Datapack
@@ -228,9 +228,9 @@ class Advancement(BaseAdvancement):
         self._icon = Item(self._json["display"]["icon"])
 
         if self._datapack.reward_namespace_path is not None:
-            self._exp = self._initialize_reward("exp", Exp)
-            self._reward = self._initialize_reward("reward", Reward)
-            self._trophy = self._initialize_reward("trophy", Trophy)
+            self._exp = self._initialize_reward("exp", self._datapack.exp_class)
+            self._reward = self._initialize_reward("reward", self._datapack.reward_class)
+            self._trophy = self._initialize_reward("trophy", self._datapack.trophy_class)
         else:
             self._exp = None
             self._reward = None
