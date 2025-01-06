@@ -48,11 +48,15 @@ class DefaultReward:
 
 
 class Exp(DefaultReward):
+    """
+    Default class for all exp rewards.
+    """
     def __init__(self, path: Path, mcpath: str):
         """
         Class for Exp reward.
         :param path: Path to the reward file.
         :param mcpath: Minecraft path of the reward
+        :raises ValueError: If the reward file is invalid/empty.
         """
         super().__init__(path, mcpath)
         self._value = self.__parse_exp()
@@ -87,6 +91,7 @@ class Reward(DefaultReward):
         Class for Item reward.
         :param path: Path to the reward file.
         :param mcpath: Minecraft path of the reward
+        :raises ValueError: If the reward file is invalid/empty.
         """
         super().__init__(path, mcpath)
         self._command_type = None
@@ -143,6 +148,7 @@ class Trophy(DefaultReward):
         Class for Trophy reward.
         :param path: Path to the reward file.
         :param mcpath: Minecraft path of the reward
+        :raises ValueError: If the reward file is invalid/empty.
         """
         super().__init__(path, mcpath)
         self._command_type = None
