@@ -11,7 +11,7 @@ from .CriteriaList import CriteriaList
 from .Datapack import Datapack
 from .Item import Item
 from .Rewards import Exp, Trophy, Reward
-from .utils import path_to_mc_path, safe_load_json, trim_path_to_namespace
+from .utils import path_to_mc_path, safe_load_json_file, trim_path_to_namespace
 
 
 class AdvancementException(Exception):
@@ -542,7 +542,7 @@ class AdvancementManager:
 class _AdvancementFactory:
     @classmethod
     def load_advancement(cls, path: Path, advancement_manager: AdvancementManager) -> Advancement | TechnicalAdvancement | InvalidAdvancement:
-        adv_json: ExtendedDict = safe_load_json(path)
+        adv_json: ExtendedDict = safe_load_json_file(path)
 
         if cls._is_not_parsable_json(adv_json):
             return InvalidAdvancement(path=path, adv_json=adv_json, reason=JSONParsingError(), datapack=advancement_manager.datapack)
