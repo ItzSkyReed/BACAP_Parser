@@ -369,16 +369,14 @@ class Advancement(BaseAdvancement):
         return f"{self.__class__.__name__}([{self._datapack}] {self._mc_path})"
 
 class AdvancementManager:
-    def __init__(self, path: Path, datapack: Datapack, technical_tabs: Iterable[str] | None):
+    def __init__(self, datapack: Datapack, technical_tabs: Iterable[str] | None):
         """
         Initializes a new instance of the AdvancementManager class.
-        :param path: Path to the datapack folder
         :param datapack: Datapack instance
         """
-
         self._datapack = datapack
 
-        self._advancement_folders = self._get_advancement_folders(path)
+        self._advancement_folders = self._get_advancement_folders(datapack.data_path)
         self._technical_tabs_paths = [
             advancement_folder / technical_tab
             for advancement_folder in self._advancement_folders
@@ -396,10 +394,10 @@ class AdvancementManager:
                 self._advancements_dict[adv_path] = _AdvancementFactory.load_advancement(adv_path, self)
 
     @staticmethod
-    def _get_advancement_folders(path) -> list[Path]:
+    def _get_advancement_folders(data_path) -> list[Path]:
         advancement_folders = []
 
-        for namespace in (path / "data").iterdir():
+        for namespace in data_path.iterdir():
             if not namespace.is_dir():
                 continue
 

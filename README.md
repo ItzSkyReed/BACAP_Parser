@@ -7,9 +7,6 @@ A Python library to parse BlazeAndCavesAdvancementsPack and its Addons
 - Python version 3.12 or higher
 - BACAP or addon for minecraft 1.21+
 
-#### Limitations:
-- Currently, datapacks with overlays are not supported; parser will work only inside `data` folder of the datapack.
-
 ### Installing
 
 ```bash

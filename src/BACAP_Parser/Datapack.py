@@ -6,7 +6,7 @@ from .utils import to_collection
 from .AdvType import AdvTypeManager
 from .TabNameMapper import TabNameMapper
 from .Rewards import Exp, Reward, Trophy
-
+from .PackMCMeta import PackMCMeta
 
 class Datapack:
     """
@@ -17,7 +17,7 @@ class Datapack:
                  exp_class: Type[Exp] = Exp, reward_class: Type[Reward] = Reward, trophy_class: Type[Trophy] = Trophy):
         """
         :param name: Name of the datapack that will be used to identify it in Parser instance
-        :param path: Path to the datapack
+        :param path: Path to the datapack folder, zip-files are not supported
         :param adv_type_manager: AdvTypeManager instance
         :param reward_namespace: namespace where rewards (exp, trophy, reward) are stored.
         If None Exp, Trophy and item rewards will not be parsed.
@@ -30,21 +30,23 @@ class Datapack:
             The provided class must inherit from the base `Reward` class.
         :param trophy_class: Specifies the class to be used for parsing the trophy part of the achievement.
             The provided class must inherit from the base `Trophy` class.
+        :raises NotImplementedError: If a zipped datapack path is given.
+        :raises FileNotFoundError: If reward_namespace does not exist in the datapack namespaces.
+        :raises ValueError: If exp_class, reward_class, reward_class are not inherited from Exp, Reward, Trophy classes.
         """
         from .Advancement import AdvancementManager
-
         self._name = name
+
+        if path.suffix == '.zip':
+            raise NotImplementedError("Zipped datapacks not supported, unpack it to the folder first")
+
         self._path = path
 
         technical_tabs = to_collection(technical_tabs, tuple)
 
-        if not (self._path / "pack.mcmeta").exists():
-            raise FileNotFoundError("pack.mcmeta not found in the datapack root, may be this is a wrong path")
+        self._pack_mcmeta = PackMCMeta(self._path)
 
-        if not (self._path / "data").exists() or not (self._path / "data").is_dir():
-            raise ValueError("data folder does not exist")
-
-        self._namespaces = [entry for entry in (self._path / "data").iterdir() if entry.is_dir()]
+        self._namespaces = [entry for entry in self._pack_mcmeta.data_path.iterdir() if entry.is_dir()]
 
         if reward_namespace is not None:
             if reward_namespace not in [entry.name for entry in self._namespaces]:
@@ -56,8 +58,6 @@ class Datapack:
         self._reward_namespace = reward_namespace
 
         self._adv_type_manager = adv_type_manager
-        self._advancement_manager = AdvancementManager(self._path, self, technical_tabs)
-        self._tab_name_mapper = tab_name_mapper
 
         self.__check_inheritance(exp_class, Exp)
         self._exp_class = exp_class
@@ -66,6 +66,10 @@ class Datapack:
         self.__check_inheritance(trophy_class, Trophy)
         self._trophy_class = trophy_class
 
+        self._tab_name_mapper = tab_name_mapper
+
+        self._advancement_manager = AdvancementManager(datapack=self, technical_tabs=technical_tabs)
+
     @staticmethod
     def __check_inheritance(base_class: type, derived_class: type):
         """
@@ -73,14 +77,8 @@ class Datapack:
 
         :param base_class: The class that is expected to be inherited from.
         :param derived_class: The class to check for inheritance.
-        :return: True if `derived_class` is a subclass of `base_class`.
-        :raises TypeError: If either `base_class` or `derived_class` is not a class.
         :raises ValueError: If `derived_class` does not inherit from `base_class`.
         """
-        if not isinstance(base_class, type):
-            raise TypeError(f"`base_class` must be a class, got {type(base_class).__name__}.")
-        if not isinstance(derived_class, type):
-            raise TypeError(f"`derived_class` must be a class, got {type(derived_class).__name__}.")
 
         if not issubclass(derived_class, base_class):
             raise ValueError(f"`{derived_class.__name__}` must inherit from `{base_class.__name__}`.")
@@ -164,3 +162,7 @@ class Datapack:
         :return: Class that will be used to parse and store trophy rewards of the advancements
         """
         return self._trophy_class
+
+    @property
+    def data_path(self) -> path:
+        return self._pack_mcmeta.data_path
