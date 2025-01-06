@@ -201,7 +201,7 @@ class Trophy(DefaultReward):
 
         description = "\n".join(x for x in self.__parse_description(components.get("lore", [])) if ".minecraft." not in x)
 
-        return self._item_class(item_id=item_id, components=components, name=name, color=color, description=description)
+        return self.__item_class(item_id=item_id, components=components, name=name, color=color, description=description)
 
     @property
     def command_type(self) -> str:
