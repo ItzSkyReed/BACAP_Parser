@@ -6,12 +6,13 @@ from .AdvType import AdvTypeManager
 from .TabNameMapper import TabNameMapper
 
 class Datapack:
-    def __init__(self, name: str, path: Path, adv_type_manager: AdvTypeManager, reward_namespace: str, technical_tabs: Iterable[str] | None = None, tab_name_mapper: TabNameMapper = TabNameMapper()):
+    def __init__(self, name: str, path: Path, adv_type_manager: AdvTypeManager, reward_namespace: str | None = None, technical_tabs: Iterable[str] | None = None, tab_name_mapper: TabNameMapper = TabNameMapper()):
         """
         :param name: Name of the datapack that will be used to identify it in Parser instance
         :param path: Path to the datapack
         :param adv_type_manager: AdvTypeManager instance
-        :param reward_namespace: namespace where rewards (exp, trophy, reward) are stored
+        :param reward_namespace: namespace where rewards (exp, trophy, reward) are stored.
+        If None Exp, Trophy and item rewards will not be parsed.
         :param technical_tabs: a list of tabs with technical advancements
         :param tab_name_mapper: TabNameMapper instance with custom tabs, if not specified.
         It will be created automatically with default BACAP tabs
@@ -31,12 +32,14 @@ class Datapack:
 
         self._namespaces = [entry for entry in (self._path / "data").iterdir() if entry.is_dir()]
 
-        if reward_namespace not in [entry.name for entry in self._namespaces]:
-            raise FileNotFoundError(f"Reward namespace \"{reward_namespace}\" does not exist, possible namespaces: {[entry.name for entry in self._namespaces]}")
+        if reward_namespace is not None:
+            if reward_namespace not in [entry.name for entry in self._namespaces]:
+                raise FileNotFoundError(f"Reward namespace \"{reward_namespace}\" does not exist, possible namespaces: {[entry.name for entry in self._namespaces]}")
+            self._reward_namespace_path = next(entry for entry in self._namespaces if entry.name == reward_namespace)
+        else:
+            self._reward_namespace_path = None
 
         self._reward_namespace = reward_namespace
-
-        self._reward_namespace_path = next(entry for entry in self._namespaces if entry.name == reward_namespace)
 
         self._adv_type_manager = adv_type_manager
         self._advancement_manager = AdvancementManager(self._path, self, technical_tabs)

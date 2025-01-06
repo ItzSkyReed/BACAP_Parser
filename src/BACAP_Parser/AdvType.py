@@ -74,13 +74,13 @@ class AdvType:
 
 
 class MultipleTypesMatch(Exception):
-    def __init__(self):
-        super().__init__("Multiple types match the given frame, color, and tab.")
+    def __init__(self, frame: str, color: Color, tab: str):
+        super().__init__(f"Multiple types match the given frame: \"{frame}\", color: \"{color}\", and tab: \"{tab}\".")
 
 
 class NoTypesMatch(Exception):
-    def __init__(self):
-        super().__init__("No types match the given frame, color, and tab.")
+    def __init__(self, frame: str, color: Color, tab: str):
+        super().__init__(f"No types match the given frame: \"{frame}\", color: \"{color}\", and tab: \"{tab}\".")
 
 
 class AdvTypeManager:
@@ -138,8 +138,8 @@ class AdvTypeManager:
         ]
 
         if len(matching_types) > 1:
-            raise MultipleTypesMatch
+            raise MultipleTypesMatch(frame, color, tab)
         elif len(matching_types) == 1:
             return matching_types[0]
         else:
-            raise NoTypesMatch
+            raise NoTypesMatch(frame, color, tab)

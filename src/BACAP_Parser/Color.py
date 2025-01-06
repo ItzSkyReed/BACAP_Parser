@@ -34,16 +34,15 @@ class Color:
             self._color = MINECRAFT_TEXT_COLORS_MAP[color]
         else:
             color = color.lstrip('#')
-
             if len(color) != 6:
                 raise ValueError(f"Invalid hex color length. A hex color must have exactly 6 characters (without '#').")
 
             try:
-                color = int(color, 16)
+                color_check = int(color, 16)
             except ValueError:
                 raise ValueError(f"Invalid hex color: '{color}'. It must consist of valid hex digits (0-9, A-F).")
 
-            if not (0 <= color <= 0xFFFFFF):
+            if not (0 <= color_check <= 0xFFFFFF):
                 raise ValueError(f"Hex color '{color}' is out of valid range (0 to #FFFFFF).")
 
             self._color = f"#{color}"

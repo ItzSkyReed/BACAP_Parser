@@ -31,6 +31,7 @@ def trim_path_to_namespace(path: Path, namespaces: Sequence[Path]) -> Path:
             return Path(*path.parts[i:])
     return path
 
+
 def cut_namespace(string_with_namespace: str) -> str:
     """
     :param string_with_namespace: string that contains namespace
@@ -85,6 +86,9 @@ def safe_load_json(path: Path, encoding: str = "utf-8") -> ExtendedDict | None:
 def arabic_to_rims(value: int | str) -> str:
     """
     Converts an integer to its Roman numeral representation.
+    :param value: Integer or string number.
+    Number > 0
+    :return: Roman numeral representation
     """
     value = int(value)
 
