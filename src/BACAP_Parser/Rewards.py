@@ -213,7 +213,7 @@ class Trophy(DefaultReward):
     @property
     def item(self) -> TrophyItem:
         """
-        :return: Item of the reward.
+        :return: Trophy item of the reward.
         """
         return self._item
 
