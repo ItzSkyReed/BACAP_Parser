@@ -86,7 +86,7 @@ class Exp(DefaultReward):
 
 
 class Reward(DefaultReward):
-    _item_class = RewardItem
+    __item_class = RewardItem
 
     def __init__(self, path: Path, mcpath: str):
         """
@@ -115,14 +115,14 @@ class Reward(DefaultReward):
             self._command_type = "give"
 
             components = components_decoder(command_data["components"]) if command_data.get("components") else None
-            return self._item_class(command_data["item_id"], components, item_type, command_data["amount"])
+            return self.__item_class(command_data["item_id"], components, item_type, command_data["amount"])
 
         match = re.search(reward_summon_pattern, self._raw_text)
         if match:
             nbt_data = nbt_decoder(match.groupdict()["nbt"])
             self._command_type = "summon"
 
-            return self._item_class(nbt_data["Item"]["id"], nbt_data["Item"]["count"], item_type, nbt_data["Item"].get("components"))
+            return self.__item_class(nbt_data["Item"]["id"], nbt_data["Item"]["count"], item_type, nbt_data["Item"].get("components"))
 
         return None
 
@@ -145,7 +145,7 @@ class Reward(DefaultReward):
 
 
 class Trophy(DefaultReward):
-    _item_class = TrophyItem
+    __item_class = TrophyItem
 
     def __init__(self, path: Path, mcpath: str):
         """
