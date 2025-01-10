@@ -18,17 +18,18 @@ def path_to_mc_path(file_path: Path) -> str:
 
 def trim_path_to_namespace(path: Path, namespaces: Sequence[Path]) -> Path:
     """
-    Trims the path to the first found namespace, including the namespace, if ф path is a subdirectory of that namespace.
+    Trims the path to the first found namespace, including the namespace, if path is a subdirectory of that namespace.
+
+    Starts searching from the end of the path.
 
     :param path: The path with namespace in it
     :param namespaces: A list of namespaces to search for
     :return: A new path trimmed to the first namespace found, including it
     """
     namespace_names = [namespace.name for namespace in namespaces]
-
-    for i, part in enumerate(path.parts):
+    for i, part in enumerate(reversed(path.parts)):
         if part in namespace_names:
-            return Path(*path.parts[i:])
+            return Path(*path.parts[len(path.parts) - i - 1:])
     return path
 
 
