@@ -2,14 +2,16 @@ from .utils import cut_namespace
 
 
 class Criteria:
-    def __init__(self, name: str, trigger: str):
+    def __init__(self, name: str, trigger: str, conditions: dict | None = None):
         """
         Class of the advancement criteria.
         :param name: Name of the criteria.
-        :param trigger: trigger of the criteria.
+        :param trigger: Trigger of the criteria.
+        :param conditions: Conditions of the criteria as raw dict object.
         """
         self._name = name
         self._trigger = cut_namespace(trigger)
+        self._conditions = conditions
         self._is_impossible = None
 
     @property
@@ -26,6 +28,10 @@ class Criteria:
         """
         return self._trigger
 
+    @property
+    def conditions(self) -> dict | None:
+        return self._conditions
+
     def __repr__(self):
         return f"<Criteria name={self._name}, trigger={self._trigger}"
 
@@ -33,9 +39,9 @@ class Criteria:
         return f"<Criteria name={self._name}, trigger={self._trigger}"
 
     def __eq__(self, other: "Criteria") -> bool:
-        if other.__class__ != self.__class__:
+        if not isinstance(other, Criteria):
             raise TypeError("Element must be an instance of the Criteria class")
-        return (self._name == other._name) and (self._trigger == other._trigger)
+        return (self._name == other._name) and (self._trigger == other._trigger) and (self._conditions == other._conditions)
 
     def __ne__(self, other: "Criteria") -> bool:
         return not self.__eq__(other)

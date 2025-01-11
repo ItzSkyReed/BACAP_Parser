@@ -18,7 +18,7 @@ class CriteriaList(list):
 
         elif isinstance(adv_criteria, dict):
             for name, crit in adv_criteria.items():
-                criteria = Criteria(name, crit["trigger"])
+                criteria = Criteria(name, crit["trigger"], conditions=crit.get("conditions"))
                 self.append(criteria)
 
         elif isinstance(adv_criteria, Criteria):
@@ -86,6 +86,8 @@ class CriteriaList(list):
                     self.remove(criteria)
 
     def __eq__(self, other: "CriteriaList") -> bool:
+        if not isinstance(other, CriteriaList):
+            return NotImplemented
         return super().__eq__(other)
 
     def __contains__(self, criteria: Criteria) -> bool:
