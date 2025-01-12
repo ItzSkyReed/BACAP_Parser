@@ -127,7 +127,7 @@ class AdvTypeManager:
         :param color: The color to match against ``adv_type.colors``. If None, this parameter is ignored.
         :param tab: The tab identifier to match against ``adv_type.tabs``. If None, this parameter is ignored.
         :return: The matched `AdvType` instance.
-        :raises MultipleTypesMatch: If more than one ``AdvType`` matches the given parameters.
+        :raises MultipleTypesMatch: If more than one ``AdvType`` matches the given parameters without clear priority.
         :raises NoTypesMatch: If no ``AdvType`` matches the given parameters.
         """
         matching_types = [
@@ -138,8 +138,18 @@ class AdvTypeManager:
         ]
 
         if len(matching_types) > 1:
-            raise MultipleTypesMatch(frame, color, tab)
-        elif len(matching_types) == 1:
+            # Prioritize types with a non-None "tabs" that matches the provided "tab".
+            prioritized_types = [
+                adv_type for adv_type in matching_types
+                if adv_type.tabs is not None and tab in adv_type.tabs
+            ]
+
+            if len(prioritized_types) == 1:
+                return prioritized_types[0]
+            elif len(prioritized_types) > 1:
+                raise MultipleTypesMatch(frame, color, tab)
+
+        if len(matching_types) == 1:
             return matching_types[0]
-        else:
-            raise NoTypesMatch(frame, color, tab)
+
+        raise NoTypesMatch(frame, color, tab)
