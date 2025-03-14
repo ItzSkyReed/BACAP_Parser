@@ -59,7 +59,7 @@ class MissingDescriptionField(AdvancementException):
 
 
 class BaseAdvancement:
-    def __init__(self, path: Path, adv_json: dict | None, datapack: Datapack):
+    def __init__(self, path: Path, adv_json: ExtendedDict | None, datapack: Datapack):
         """
         Initializes a new instance of the BaseAdvancement class.
         :param path: The file path to the advancement JSON file.
@@ -200,7 +200,7 @@ class Advancement(BaseAdvancement):
     Inherits from BaseAdvancement.
     """
 
-    def __init__(self, path: Path, adv_json: dict, datapack: Datapack, reward_mcpath: str, tab: str, color: Color, frame: str, adv_type: AdvType,
+    def __init__(self, path: Path, adv_json: ExtendedDict, datapack: Datapack, reward_mcpath: str, tab: str, color: Color, frame: str, adv_type: AdvType,
                  hidden: bool):
         """
         Creates a new instance of the Advancement class
@@ -224,6 +224,8 @@ class Advancement(BaseAdvancement):
         self._reward_mcpath = reward_mcpath
         self._title = self._json["display"]["title"]["translate"]
         self._description = self._json["display"]["description"]["translate"]
+        if "extra" in self._json["display"]["description"]:
+            self._get_description_from_extra()
         self._background = self._json["display"].get("background")
         self._icon = Item(self._json["display"]["icon"])
 
@@ -235,6 +237,15 @@ class Advancement(BaseAdvancement):
             self._exp = None
             self._reward = None
             self._trophy = None
+
+    def _get_description_from_extra(self):
+        for item in self._json["display"]["description"].get("extra", []):
+            if not item:
+                continue
+            text_value = item.get_with_multiple_values("text", "translate", default="")
+            if isinstance(item, dict) and (item.get("color") == self._color.value or text_value == "\n" or text_value.rstrip("\n") == ""):
+                self._description += text_value
+        self._description = self._description.rstrip("\n")
 
     def _initialize_reward(self, name: Literal["exp", "reward", "trophy"], cls: Type[Exp | Reward | Trophy]):
         """
