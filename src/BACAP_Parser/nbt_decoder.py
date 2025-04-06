@@ -43,7 +43,7 @@ def nbt_decoder(input_str: str):
         elif value.endswith("b"):
             return bool(int(value[:-1]))
         elif value.lower() in ("false", "true"):
-            return True if value == "true" else False
+            return value == "true"
         elif value[-1] in ("f", "d"):
             return float(value[:-1])
         elif value[-1] in ("s",):
