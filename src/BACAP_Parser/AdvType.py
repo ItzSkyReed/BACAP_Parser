@@ -12,7 +12,7 @@ class AdvType:
 
     :param name: The name of the type.
     :param frames: A string or an iterable of strings representing the frames. Valid options are ``"task"``, ``"goal"``, ``"challenge"``.
-    :param colors: A single color or an iterable containing colors of type ``Color``.
+    :param colors: A single color or an iterable containing colors of type Color.
     :param tabs: A list of possible tabs. If not provided, any tab is allowed.
     :param hidden_color: Color of the advancement if it is hidden.
     :raises ValueError: If frames are not a subset of ``constants.ADV_FRAMES``, or if colors are not of type Color.

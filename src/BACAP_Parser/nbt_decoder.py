@@ -24,6 +24,8 @@ def nbt_decoder(input_str: str):
         return "\\".join((x.replace("\\", "") for x in string.split(r"\\")))
 
     def convert_type(value: str) -> dict | list | bool | int | float | str:
+        if len(value) == 0:
+            return ""
         if value.startswith("[") and value.endswith("]"):
             return parse_list(value)
         elif value.startswith("{") and value.endswith("}"):
@@ -41,7 +43,7 @@ def nbt_decoder(input_str: str):
         elif value.endswith("b"):
             return bool(int(value[:-1]))
         elif value.lower() in ("false", "true"):
-            return value == "true"
+            return True if value == "true" else False
         elif value[-1] in ("f", "d"):
             return float(value[:-1])
         elif value[-1] in ("s",):
