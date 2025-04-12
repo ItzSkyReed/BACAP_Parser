@@ -1,6 +1,3 @@
-from .utils import cut_namespace
-
-
 class Criteria:
     def __init__(self, name: str, trigger: str, conditions: dict | None = None):
         """
@@ -10,7 +7,7 @@ class Criteria:
         :param conditions: Conditions of the criteria as raw dict object.
         """
         self._name = name
-        self._trigger = cut_namespace(trigger)
+        self._trigger = trigger
         self._conditions = conditions
         self._is_impossible = None
 
