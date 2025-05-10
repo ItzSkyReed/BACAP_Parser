@@ -576,17 +576,18 @@ class _AdvancementFactory:
         color_data = adv_json["display"]["description"].get("color")
         frame_data = adv_json["display"].get("frame")
 
-        if frame_data and color_data:
+        if frame_data:
+            frame: str = frame_data
+        else:
+            frame: str = DEFAULT_MINECRAFT_FRAME
+
+        if color_data:
             color: Color = Color(color_data)
-            frame: str = frame_data
-
-        elif frame_data and not color_data:
-            color = DEFAULT_MINECRAFT_FRAME_COLOR_MAP[frame_data]
-            frame: str = frame_data
-
+        elif frame_data:
+            color: Color = DEFAULT_MINECRAFT_FRAME_COLOR_MAP[frame_data]
         else:
             color: Color = DEFAULT_MINECRAFT_DESCRIPTION_COLOR
-            frame: str = DEFAULT_MINECRAFT_FRAME
+
 
         hidden: bool = adv_json["display"].get("hidden", False)
 
