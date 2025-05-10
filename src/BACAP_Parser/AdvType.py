@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from typing import Type
 
 from .Color import Color
-from .constants import ADV_FRAMES, DEFAULT_BACAP_HIDDEN_COLOR
+from .constants import ADV_FRAMES
 from .utils import to_collection
 
 
