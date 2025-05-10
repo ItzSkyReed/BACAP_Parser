@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 from typing import Type
 
+from . import DEFAULT_BACAP_HIDDEN_COLOR
 from .Color import Color
 from .constants import ADV_FRAMES
 from .utils import to_collection
@@ -19,7 +20,7 @@ class AdvType:
     """
 
     def __init__(self, name: str, frames: Iterable[str] | str,
-                 colors: Iterable[Color] | Color, tabs: Iterable[str] | str = None, hidden_color: Color | None = None):
+                 colors: Iterable[Color] | Color, tabs: Iterable[str] | str = None, hidden_color: Color | None = DEFAULT_BACAP_HIDDEN_COLOR):
 
         self._name = name
 
