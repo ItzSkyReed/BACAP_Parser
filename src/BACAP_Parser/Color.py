@@ -19,7 +19,6 @@ MINECRAFT_TEXT_COLORS_MAP = {
 MINECRAFT_TEXT_COLORS_MAP_REVERSED = {value: key for key, value in MINECRAFT_TEXT_COLORS_MAP.items()}
 
 class Color:
-
     def __init__(self, color: str):
         """
         :param color: Minecraft text color or hex representation of color (with or without '#')
@@ -78,6 +77,9 @@ class Color:
         """
         :return: color representation as Integer value
         """
+        return self.__int__()
+
+    def __int__(self) -> int:
         return int(self._color.lstrip('#'), 16)
 
     @property

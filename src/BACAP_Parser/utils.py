@@ -56,7 +56,7 @@ def to_collection[T, C: set | list | tuple | frozenset](item: Iterable[T] | T, c
     return constructor([item])
 
 
-def get_file_text(path: Path, encoding: str = None) -> str:
+def get_file_text(path: Path, encoding: str = 'utf-8') -> str:
     """
 
     :param path: Path-object
@@ -118,3 +118,12 @@ def arabic_to_rims(value: int | str) -> str:
             value %= num
 
     return "".join(result)
+
+def to_title_style(string: str) -> str:
+    """
+    Converts a string to a title case, also replaces underscores with spaces.
+
+    :param string: The input string to be converted.
+    :return: The converted string in title case with underscores replaced by spaces.
+    """
+    return string.replace("_", " ").title()
