@@ -70,8 +70,9 @@ class BaseAdvancement:
         self._datapack = datapack
 
         self._filename = path.stem
-        self._mc_path = path_to_mc_path(trim_path_to_namespace(self._path, self._datapack.namespaces))
-        self._namespace = path.parts[0]
+        trimmed_path = trim_path_to_namespace(self._path, self._datapack.namespaces)
+        self._mc_path = path_to_mc_path(trimmed_path)
+        self._namespace = trimmed_path.parts[0]
         self._criteria_list = CriteriaList(self._json["criteria"])
 
         if self._json:
