@@ -1,7 +1,6 @@
 import re
 
-from .ExtendedDict import ExtendedDict
-from .utils import cut_namespace
+from ..utils import ExtendedDict, cut_namespace
 
 
 def is_decimal(num):

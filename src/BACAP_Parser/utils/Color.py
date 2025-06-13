@@ -18,6 +18,7 @@ MINECRAFT_TEXT_COLORS_MAP = {
 }
 MINECRAFT_TEXT_COLORS_MAP_REVERSED = {value: key for key, value in MINECRAFT_TEXT_COLORS_MAP.items()}
 
+
 class Color:
     def __init__(self, color: str):
         """

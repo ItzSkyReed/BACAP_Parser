@@ -1,64 +1,63 @@
+from abc import ABC, abstractmethod
 from collections.abc import Iterable, Iterator
 from functools import reduce
 from pathlib import Path
-from typing import Literal, Type, Any
+from typing import Literal, Type, Any, TYPE_CHECKING
 
 from .AdvType import AdvType
 from .ExtendedDict import ExtendedDict
 from .constants import DEFAULT_MINECRAFT_DESCRIPTION_COLOR, DEFAULT_MINECRAFT_FRAME, DEFAULT_MINECRAFT_FRAME_COLOR_MAP
 from .Color import Color
 from .CriteriaList import CriteriaList
-from .Datapack import Datapack
 from .Item import Item
 from .Rewards import Exp, Trophy, Reward
+from .exceptions import AdvancementException, MissingDescriptionField, MissingTitleField, InvalidRewardFunction, JSONParsingError
 from .utils import path_to_mc_path, safe_load_json_file, trim_path_to_namespace
 
-
-class AdvancementException(Exception):
-    """
-    A default exception class for handling errors during advancement initialization.
-    Serves as a base class for creating other specific advancement-related exceptions.
-    """
-
-    def __init__(self, message="Something went wrong"):
-        super().__init__(message)
+if TYPE_CHECKING:
+    from .Datapack import Datapack
 
 
-class JSONParsingError(AdvancementException):
-    """
-    Exception raised when parsing JSON data fails.
-    Indicates that the provided JSON data could not be successfully parsed.
-    """
+class AbstractBaseAdvancement(ABC):
+    @property
+    @abstractmethod
+    def path(self) -> Path:
+        ...
 
-    def __init__(self):
-        super().__init__("Failed to parse JSON data")
+    @property
+    @abstractmethod
+    def json_string(self) -> str | None:
+        ...
 
+    @property
+    @abstractmethod
+    def json(self) -> dict | None:
+        ...
 
-class InvalidRewardFunction(AdvancementException):
-    """
-    Exception raised when an invalid reward function is passed, or reward function does not exist.
-    """
-    def __init__(self):
-        super().__init__("Advancement does not contain a valid reward function")
+    @property
+    @abstractmethod
+    def parent_mcpath(self) -> dict | None:
+        ...
 
+    @property
+    @abstractmethod
+    def namespace(self) -> str:
+        ...
 
-class MissingTitleField(AdvancementException):
-    """
-    Exception raised when a title does not exist.
-    """
-    def __init__(self):
-        super().__init__("Advancement does not contain a title")
-
-
-class MissingDescriptionField(AdvancementException):
-    """
-    Exception raised when description does not exist.
-    """
-    def __init__(self):
-        super().__init__("Advancement does not contain a description")
+    @property
+    @abstractmethod
+    def criteria_list(self) -> CriteriaList:
+        ...
 
 
-class BaseAdvancement:
+class AbstractInvalidAdvancement(ABC):
+    @property
+    @abstractmethod
+    def reason(self) -> AdvancementException:
+        ...
+
+
+class BaseAdvancement(AbstractBaseAdvancement):
     def __init__(self, path: Path, adv_json: ExtendedDict | None, datapack: Datapack):
         """
         Initializes a new instance of the BaseAdvancement class.
@@ -70,15 +69,17 @@ class BaseAdvancement:
         self._datapack = datapack
 
         self._filename = path.stem
+
         trimmed_path = trim_path_to_namespace(self._path, self._datapack.namespaces)
         self._mc_path = path_to_mc_path(trimmed_path)
+
         self._namespace = trimmed_path.parts[0]
         self._criteria_list = CriteriaList(self._json["criteria"])
 
         if self._json:
-            self._parent = self._json.get("parent")
+            self._parent_mcpath = self._json.get("parent")
         else:
-            self._parent = None
+            self._parent_mcpath = None
 
     @property
     def path(self) -> Path:
@@ -102,14 +103,14 @@ class BaseAdvancement:
         return self._json
 
     @property
-    def parent(self) -> str | None:
+    def parent_mcpath(self) -> str | None:
         """
         :return: The Minecraft Path of the parent advancement, if any.
         """
-        return self._parent
+        return self._parent_mcpath
 
     @property
-    def mc_path(self) -> str:
+    def mcpath(self) -> str:
         """
         Returns the path of the advancement in Minecraft format.
         """
@@ -123,13 +124,6 @@ class BaseAdvancement:
         return self._namespace
 
     @property
-    def filename(self) -> str:
-        """
-        Returns the file name of the advancement without extension.
-        """
-        return self._filename
-
-    @property
     def criteria_list(self) -> CriteriaList:
         """
         Returns a 'CriteriaList' of criteria for the advancement
@@ -138,25 +132,25 @@ class BaseAdvancement:
 
     # To sort in alphabetic order by mcpath
     def __gt__(self, other):
-        return self.mc_path > other.mc_path
+        return self.mcpath > other.mcpath
 
     def __lt__(self, other):
-        return self.mc_path < other.mc_path
+        return self.mcpath < other.mcpath
 
     def __ge__(self, other):
-        return self.mc_path >= other.mc_path
+        return self.mcpath >= other.mcpath
 
     def __le__(self, other):
-        return self.mc_path <= other.mc_path
+        return self.mcpath <= other.mcpath
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self._path})"
+        return self._mc_path
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self._path})"
 
 
-class InvalidAdvancement(BaseAdvancement):
+class InvalidAdvancement(AbstractInvalidAdvancement, BaseAdvancement):
     """
     Class representing invalid advancement.
     Inherits from BaseAdvancement.
@@ -169,7 +163,7 @@ class InvalidAdvancement(BaseAdvancement):
         :param datapack: The name of datapack.
         :param reason (str, optional): The reason why the advancement is considered invalid.
         """
-        super().__init__(path, adv_json, datapack)
+        super().__init__(self, path, adv_json, datapack)
         self._reason = reason
 
     @property
@@ -270,6 +264,10 @@ class Advancement(BaseAdvancement):
         return self._datapack.reward_namespace_path / f"function/{reward_type}/{self._reward_mcpath.split(":", 1)[1]}.mcfunction"
 
     @property
+    def datapack(self) -> Datapack:
+        return self._datapack
+
+    @property
     def title(self) -> str:
         """
         :return: the title of the advancement.
@@ -368,7 +366,7 @@ class Advancement(BaseAdvancement):
         return self._reward
 
     @property
-    def trophy(self) -> Trophy| None:
+    def trophy(self) -> Trophy | None:
         """
         :return: Trophy class if Trophy reward exists, else None.
         """
@@ -379,6 +377,7 @@ class Advancement(BaseAdvancement):
 
     def __str__(self):
         return f"{self.__class__.__name__}([{self._datapack}] {self._mc_path})"
+
 
 class AdvancementManager:
     def __init__(self, datapack: Datapack, technical_tabs: Iterable[str] | None):
@@ -588,7 +587,6 @@ class _AdvancementFactory:
             color: Color = DEFAULT_MINECRAFT_FRAME_COLOR_MAP[frame_data]
         else:
             color: Color = DEFAULT_MINECRAFT_DESCRIPTION_COLOR
-
 
         hidden: bool = adv_json["display"].get("hidden", False)
 

@@ -75,7 +75,7 @@ only_technical: Iterator[TechincalAdvancement] = manager.filtered_iterator(
 
 ```py
 manager: AdvancementManager = parser.get_datapack("bacap").advancement_manager
-parent = manager.find(criteria={"mc_path": adv.parent}, skip_technical=False, skip_invalid=False, limit=1)[0]
+parent = manager.find(criteria={"mc_path": adv.parent_mcpath}, skip_technical=False, skip_invalid=False, limit=1)[0]
 ```
 
 `deep_find` differs from `find` in three key ways:

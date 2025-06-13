@@ -1,6 +1,5 @@
-from .ExtendedDict import ExtendedDict
 from .nbt_decoder import nbt_decoder
-from .utils import cut_namespace
+from ..utils import cut_namespace, ExtendedDict
 
 
 def components_decoder(input_str: str) -> dict[str, str | int | bool | float | dict | list]:

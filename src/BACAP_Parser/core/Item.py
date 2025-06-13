@@ -1,14 +1,36 @@
+from abc import ABC, abstractmethod
 from typing import Literal
-
 
 from .ExtendedDict import ExtendedDict
 from .Color import Color
 
 
+class AbstractItem(ABC):
+    @property
+    @abstractmethod
+    def id(self) -> str:
+        ...
 
-class Item:
+    @property
+    @abstractmethod
+    def components(self) -> ExtendedDict | None:
+        ...
+
+    @property
+    @abstractmethod
+    def enchantments(self) -> ExtendedDict | None:
+        ...
+
+    @property
+    @abstractmethod
+    def has_enchantment_glint(self) -> bool:
+        ...
+
+
+class Item(AbstractItem):
     def __init__(self, /, item_data: ExtendedDict[str, str | dict | list] = None,
                  *, item_id: str = None, components: ExtendedDict[str, str | ExtendedDict | list] = None) -> None:
+
         if item_data is None and item_id is None:
             raise ValueError("Either 'item_data' must be provided or both 'item_id' and 'components' must be specified.")
 
@@ -34,7 +56,7 @@ class Item:
         return self._components
 
     @property
-    def enchantments(self) -> dict | None:
+    def enchantments(self) -> ExtendedDict | None:
         """
         :return: Dictionary of enchantments, or None if item doesn't contain any enchantments.'
         """

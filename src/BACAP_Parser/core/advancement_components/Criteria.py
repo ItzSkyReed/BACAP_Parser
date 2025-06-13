@@ -1,4 +1,38 @@
-class Criteria:
+from abc import ABC, abstractmethod
+from typing import Self
+
+
+class AbstractCriteria(ABC):
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        ...
+
+    @property
+    @abstractmethod
+    def trigger(self) -> str:
+        ...
+
+    @property
+    @abstractmethod
+    def conditions(self) -> dict | None:
+        ...
+
+    @property
+    @abstractmethod
+    def is_impossible(self) -> bool:
+        ...
+
+    @abstractmethod
+    def __eq__(self, other: "Criteria") -> bool:
+        ...
+
+    @abstractmethod
+    def __ne__(self, other: Self) -> bool:
+        ...
+
+
+class Criteria(AbstractCriteria):
     def __init__(self, name: str, trigger: str, conditions: dict | None = None):
         """
         Class of the advancement criteria.
@@ -27,6 +61,9 @@ class Criteria:
 
     @property
     def conditions(self) -> dict | None:
+        """
+        Dictionary of conditions.
+        """
         return self._conditions
 
     def __repr__(self):
@@ -35,16 +72,16 @@ class Criteria:
     def __str__(self):
         return f"<Criteria name={self._name}, trigger={self._trigger}"
 
-    def __eq__(self, other: "Criteria") -> bool:
+    def __eq__(self, other: Self) -> bool:
         if not isinstance(other, Criteria):
             raise TypeError("Element must be an instance of the Criteria class")
         return (self._name == other._name) and (self._trigger == other._trigger) and (self._conditions == other._conditions)
 
-    def __ne__(self, other: "Criteria") -> bool:
+    def __ne__(self, other: Self) -> bool:
         return not self.__eq__(other)
 
     @property
-    def is_impossible(self):
+    def is_impossible(self) -> bool:
         """
         :return: True if criteria is impossible, False otherwise
         """
